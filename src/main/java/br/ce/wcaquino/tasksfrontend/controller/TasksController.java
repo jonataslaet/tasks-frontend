@@ -65,9 +65,9 @@ public class TasksController {
 	}
 	
 	@GetMapping("delete/{id}")
-	public String delete(@PathVariable Long id, Model model) {
+	public String delete(@PathVariable Long idTask, Model model) {
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.delete(getBackendURL() + "/todo/" + id);
+		restTemplate.delete(getBackendURL() + "/todo/" + idTask);
 		model.addAttribute("success", "Success!");
 		model.addAttribute("todos", getTodos());
 		return "index";

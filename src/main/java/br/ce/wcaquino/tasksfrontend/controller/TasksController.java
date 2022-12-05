@@ -20,12 +20,15 @@ public class TasksController {
 
 	@Value("${backend.port}")
 	private String BACKEND_PORT;
+
+	@Value("${backend.context}")
+	private String BACKEND_CONTEXT;
 	
 	@Value("${app.version}")
 	private String VERSION;
 	
 	public String getBackendURL() {
-		return "http://" + BACKEND_HOST + ":" + BACKEND_PORT;
+		return "http://" + BACKEND_HOST + ":" + BACKEND_PORT + "/" + BACKEND_CONTEXT;
 	}
 	
 	@GetMapping("")
@@ -63,14 +66,14 @@ public class TasksController {
 	}
 	
 	@GetMapping("delete/{id}")
-	public String delete(@PathVariable Long idTask, Model model) {
+	public String delete(@PathVariable("id") Long idTask, Model model) {
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.delete(getBackendURL() + "/todo/" + idTask);
+		String backendURL = getBackendURL();
+		restTemplate.delete(backendURL + "/todo/" + idTask);
 		model.addAttribute("success", "Success!");
 		model.addAttribute("todos", getTodos());
 		return "index";
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	private List<Todo> getTodos() {
